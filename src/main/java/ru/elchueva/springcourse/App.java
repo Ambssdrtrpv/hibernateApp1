@@ -7,6 +7,8 @@ import org.hibernate.cfg.Configuration;
 import ru.elchueva.springcourse.model.Item;
 import ru.elchueva.springcourse.model.Person;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class App {
@@ -20,12 +22,13 @@ public class App {
         try {
             session.beginTransaction();
 
-            Person person = session.get(Person.class, 2);
+            Person person = session.get( Person.class, 3);
+            List<Item> items = person.getItems();
+            for (Item item : items) {
+                session.remove(item);
+            }
+            person.getItems().clear();
 
-            Item newItem = new Item("Item from hibernate", person);
-            person.getItems().add(newItem);
-
-            session.save(newItem); // не порождает никакх sql запросов
             session.getTransaction().commit(); //делает все необходимые sql запросы
         } finally {
             sessionFactory.close();
