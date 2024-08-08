@@ -1,13 +1,14 @@
 package ru.elchueva.springcourse.model;
 
-
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "person")
+@Table(name = "Person")
 public class Person {
-    @Id
+
     @Column(name = "id")
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
@@ -17,39 +18,54 @@ public class Person {
     @Column(name = "age")
     private int age;
 
-    public Person() {}
+    @OneToMany(mappedBy = "owner")
+    private List<Item> items;
 
-    public Person(String name, int age) {
-        this.name = name;
-        this.age = age;
-    }
+    public Person() {}
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getAge() {
         return age;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setAge(int age) {
         this.age = age;
     }
 
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
     @Override
     public String toString() {
-        return this.name + ", " + this.age;
+        return "Person{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                '}';
     }
 }
