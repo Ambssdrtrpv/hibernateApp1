@@ -22,13 +22,13 @@ public class App {
         try {
             session.beginTransaction();
 
-           Person person = session.get(Person.class, 4);
-           Item item = session.get(Item.class, 1);
+            Person person = new Person("Test cascading", 30);
 
-           item.getOwner().getItems().remove(item);
-           item.setOwner(person);
-           person.getItems().add(item);
+            person.addItem(new Item("Test cascading item1"));
+            person.addItem (new Item("Test cascading item2"));
+            person.addItem(new Item("Test cascading item3"));
 
+            session.save(person);
 
             session.getTransaction().commit(); //делает все необходимые sql запросы
         } finally {
