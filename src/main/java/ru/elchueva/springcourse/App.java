@@ -4,17 +4,13 @@ package ru.elchueva.springcourse;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import ru.elchueva.springcourse.model.Item;
+import ru.elchueva.springcourse.model.Passport;
 import ru.elchueva.springcourse.model.Person;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class App {
     public static void main(String[] args) {
-        Configuration configuration = new Configuration().addAnnotatedClass(Person.class)
-                .addAnnotatedClass(Item.class);
+        Configuration configuration = new Configuration()
+                .addAnnotatedClass(Person.class).addAnnotatedClass(Passport.class);
 
         SessionFactory sessionFactory = configuration.buildSessionFactory();
         Session session = sessionFactory.getCurrentSession();
@@ -22,15 +18,13 @@ public class App {
         try {
             session.beginTransaction();
 
-            Person person = new Person("Test cascading", 30);
+            Person person = new Person("Test person", 50);
+            Passport passport = new Passport(12345);
 
-            person.addItem(new Item("Test cascading item1"));
-            person.addItem (new Item("Test cascading item2"));
-            person.addItem(new Item("Test cascading item3"));
-
+            person.setPassport(passport);
             session.save(person);
 
-            session.getTransaction().commit(); //делает все необходимые sql запросы
+            session.getTransaction().commit();
         } finally {
             sessionFactory.close();
         }
