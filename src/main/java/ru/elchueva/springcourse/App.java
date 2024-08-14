@@ -22,19 +22,13 @@ public class App {
             Session session = sessionFactory.getCurrentSession();
             session.beginTransaction();
 
-            Movie movie = new Movie("Pulp fiction", 1994);
-            Actor actor1 = new Actor("Harvey Keitel", 81);
-            Actor actor2 = new Actor("Samuel L.Jackson", 72);
+            Actor actor = session.get(Actor.class, 2);
 
-            movie.setActors(new ArrayList<>(List.of(actor1, actor2)));
+            Movie movieToRemove = actor.getMovies().get(0);
 
-            actor1.setMovies(new ArrayList<>(Collections.singletonList(movie)));
-            actor2.setMovies(new ArrayList<>(Collections.singletonList(movie)));
+            actor.getMovies().remove(0);
 
-            session.save(movie);
-
-            session.save(actor1);
-            session.save(actor2);
+            movieToRemove.getActors().remove(actor);
 
             session.getTransaction().commit();
         }
