@@ -20,13 +20,12 @@ public class App {
             Session session = sessionFactory.getCurrentSession();
             session.beginTransaction();
 
-            Person person = session.get(Person.class, 1);
-            System.out.println("Получили человека");
+            Item item = session.get(Item.class, 1);
+            System.out.println("Получили товар");
 
-            //получим связанные сущности(Lazy по умолчанию)
-            System.out.println(person.getItems());
+            System.out.println(item.getOwner());
+
             session.getTransaction().commit();
-            //session.close(); закрываем сессию
         } finally {
             sessionFactory.close();
         }
