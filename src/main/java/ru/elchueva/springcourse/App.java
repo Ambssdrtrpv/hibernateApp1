@@ -20,12 +20,16 @@ public class App {
             Session session = sessionFactory.getCurrentSession();
             session.beginTransaction();
 
-            Item item = session.get(Item.class, 1);
-            System.out.println("Получили товар");
+            Person person = session.get(Person.class, 1);
+            System.out.println("Получили человека");
+            System.out.println(person);
 
-            System.out.println(item.getOwner());
+            Hibernate.initialize(person.getItems()); //подгружаем связанные ленивые сущности
 
             session.getTransaction().commit();
+
+            System.out.println("Вне сессии");
+            System.out.println(person.getItems()); //вне сессии товары можем получать - они уже были подгружены
         } finally {
             sessionFactory.close();
         }
