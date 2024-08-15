@@ -4,33 +4,29 @@ package ru.elchueva.springcourse;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import ru.elchueva.springcourse.model.Actor;
-import ru.elchueva.springcourse.model.Movie;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import ru.elchueva.springcourse.model.Item;
+import ru.elchueva.springcourse.model.Person;
 
 public class App {
     public static void main(String[] args) {
         Configuration configuration = new Configuration()
-                .addAnnotatedClass(Actor.class).addAnnotatedClass(Movie.class);
+                .addAnnotatedClass(Person.class).addAnnotatedClass(Item.class);
 
         SessionFactory sessionFactory = configuration.buildSessionFactory();
-
-        try(sessionFactory) {
+        try {
             Session session = sessionFactory.getCurrentSession();
             session.beginTransaction();
 
-            Actor actor = session.get(Actor.class, 2);
+            Person person = session.get(Person.class, 1);
+            System.out.println("Получили человека");
 
-            Movie movieToRemove = actor.getMovies().get(0);
-
-            actor.getMovies().remove(0);
-
-            movieToRemove.getActors().remove(actor);
-
+            //получим связанные сущности(Lazy по умолчанию)
+            System.out.println(person.getItems());
             session.getTransaction().commit();
+            //session.close(); // закрываем сессию
+        } finally {
+            sessionFactory.close();
         }
+
     }
 }

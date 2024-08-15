@@ -1,12 +1,12 @@
 package ru.elchueva.springcourse.model;
 
+
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
-@Table(name = "Actor")
-public class Actor {
+@Table(name = "Person")
+public class Person {
 
     @Id
     @Column(name = "id")
@@ -19,17 +19,12 @@ public class Actor {
     @Column(name = "age")
     private int age;
 
-    @ManyToMany
-    @JoinTable(
-            name = "Actor_movie",
-            joinColumns = @JoinColumn(name = "actor_id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_id")
-    )
-    private List<Movie> movies;
+    @OneToMany(mappedBy = "owner")
+    private List<Item> items;
 
-    public Actor(){}
+    public Person() {}
 
-    public Actor(String name, int age) {
+    public Person(String name, int age) {
         this.name = name;
         this.age = age;
     }
@@ -46,6 +41,10 @@ public class Actor {
         return age;
     }
 
+    public List<Item> getItems() {
+        return items;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -58,33 +57,17 @@ public class Actor {
         this.age = age;
     }
 
-    public List<Movie> getMovies() {
-        return movies;
-    }
-
-    public void setMovies(List<Movie> movies) {
-        this.movies = movies;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Actor actor = (Actor) o;
-        return id == actor.id && age == actor.age && Objects.equals(name, actor.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, age);
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 
     @Override
     public String toString() {
-        return "Actor{" +
+        return "Person{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +
+                ", items=" + items +
                 '}';
     }
 }
